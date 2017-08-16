@@ -39,14 +39,37 @@ public class VideoController {
             String subPath = path + item;
             File file = new File(subPath);
 
+            FileType type = getFileType(file);
+            if (FileType.unknown == type) {
+                continue;
+            }
+
             FileInfo info = new FileInfo();
             info.setName(file.getName());
-            info.setType(file.isDirectory() ? FileType.Dir : FileType.File);
+            info.setType(type);
             info.setPath(subPath.substring(rootPath.length() + 1));
             list.add(info);
         }
 
         return list;
+    }
+
+    private FileType getFileType(File file) {
+        if (file.isDirectory()) {
+            return FileType.dir;
+        }
+
+        int index = file.getName().lastIndexOf(".") + 1;
+        if (index == -1) {
+            return FileType.unknown;
+        }
+
+        String ext = file.getName().substring(index).toLowerCase();
+        try {
+            return FileType.valueOf(ext);
+        } catch (IllegalArgumentException e) {
+            return FileType.unknown;
+        }
     }
 
     @GetMapping("/video/**")

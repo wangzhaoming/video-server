@@ -5,11 +5,16 @@
     <link rel="stylesheet" href="videojs/src/video-js.css">
 </head>
 <body>
-<ul class="root">
+<div class="root">
+    <div class="file-list">
+        <item v-for="item in files"
+              :data="item">
+        </item>
+    </div>
+    <video-player v-if="showVideo" :video-type="videoType" :video-path="videoPath" />
+</div>
 
-</ul>
-
-<script src="js/jquery.js"></script>
+<script src="js/vue.min.js"></script>
 <script src="videojs/src/video.js"></script>
 <script src="js/ajax.js"></script>
 <script src="js/main.js"></script>

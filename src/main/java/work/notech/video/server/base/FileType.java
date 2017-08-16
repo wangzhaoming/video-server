@@ -1,5 +1,5 @@
 package work.notech.video.server.base;
 
 public enum  FileType {
-    File, Dir
+    dir, mp4, flv, mkv, avi, unknown
 }
