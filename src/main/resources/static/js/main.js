@@ -2,15 +2,54 @@ let data = {
   files: [],
   showVideo: false,
   videoType: '',
-  videoPath: ''
+  videoPath: '',
+  paths: [],
+  currentPath: ''
 };
 
+Vue.component('navi', {
+  props: ['paths'],
+  template: `
+    <div class="navi">
+        <span class="dir" @click="jump($event)">
+            <img class="svg" src="../img/home.svg" alt="首页">
+        </span>
+        <template v-for="(path, i) in paths">
+            <span class="dir" @click="jump($event)" :data-path="getPath(i)">{{path}}</span>
+        </template>
+    </div>
+  `,
+  methods: {
+    getPath: function(i) {
+      let s = '';
+      for (let j = 0; j <= i; j++) {
+        s += this.paths[j] + '/';
+      }
+      return s ? s.substring(0, s.length - 1) : s;
+    },
+    jump: function(e) {
+      let target = e.target.dataset.path || '';
+      if (data.currentPath === target) {
+        return;
+      }
+
+      ajax.get(`/list/${target}`).then(files => data.files = files);
+      data.paths = target ? target.split('/') : [];
+      data.currentPath = target;
+    }
+  }
+});
+
 Vue.component('item', {
-  props: ['data'],
-  template: '<div @click="itemClick(data)">{{ data.name }}</div>',
+  props: ['row'],
+  template: `<div class="row" @click="itemClick(row)">
+                <span :class="['type-icon', row.type]"></span><span>{{ row.name }}</span>
+             </div>`,
   methods: {
     itemClick: function(item) {
       if (item.type === 'dir') {
+        data.paths.push(item.name);
+        data.currentPath += (data.currentPath ? '/' : '') + item.name;
         ajax.get(`/list/${item.path}`).then(files => data.files = files);
       } else {
         data.videoPath = '/video/' + item.path;
@@ -51,7 +90,7 @@ Vue.component('video-player', {
 
 let app = new Vue({
   el: '.root',
-  data: data,
+  data: data
 });
 
 ajax.get(`/list/`).then(files => data.files = files);
