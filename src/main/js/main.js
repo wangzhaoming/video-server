@@ -3,6 +3,7 @@ import ajax from './ajax';
 import routerView from './pages/router-view.vue';
 import swal from 'sweetalert';
 
+import fontcss from './css/font/css/font-awesome.min.css';
 import swalcss from 'sweetalert/dist/sweetalert.css';
 import style from './css/style.css';
 
@@ -28,10 +29,12 @@ const app = new Vue({
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
-          closeOnConfirm: false
+          closeOnConfirm: false,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
         },
         function(){
-          // ajax.get('/shutdown');
+          ajax.get('/shutdown').then(() => swal.close());
         });
     }
   }

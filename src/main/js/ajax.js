@@ -6,7 +6,7 @@ function send(method, url, param) {
       if (client.readyState == 4 && client.status == 200) {
         let contentType = client.getResponseHeader("Content-Type");
         let data = client.responseText;
-        if (contentType.startsWith('application/json')) {
+        if (contentType && contentType.startsWith('application/json')) {
           data = JSON.parse(data);
         }
         resolve(data);
