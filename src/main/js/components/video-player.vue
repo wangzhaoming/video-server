@@ -5,7 +5,7 @@
                 <div id="videoplayer_container">
                     <div id="videoplayer">
                         <video id="my_video_1" class="video-js vjs-sublime-skin" controls preload="auto" width="100%"
-                               height="100%" poster="../img/poster.png" data-setup='{"techOrder": ["html5"]}'>
+                               height="100%" >
                             <source :type="videoType" :src="videoPath"/>
                         </video>
                     </div>
@@ -16,8 +16,6 @@
 </template>
 
 <script>
-    import poster from '../img/poster.png';
-
     export default {
         props: ['videoType', 'videoPath'],
         methods: {
