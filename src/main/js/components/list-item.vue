@@ -1,6 +1,6 @@
 <template>
     <div class="row" @click="itemClick(row)">
-        <span :class="['type-icon', row.type]"></span><span>{{ row.name }}</span>
+        <span :class="['type-icon', row.type]"></span><span class="file-name">{{ row.name }}</span>
     </div>
 </template>
 

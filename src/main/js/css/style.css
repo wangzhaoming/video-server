@@ -429,6 +429,11 @@ html, body {
     background: url(../img/breadcrumb.svg) no-repeat right center;
     padding: 14px;
     background-size: auto 24px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
 }
 
 .navi > .dir,
@@ -489,6 +494,13 @@ html, body {
     background-image: url("../img/icon-core-filetypes_video.svg");
 }
 
+.file-list>.row>span.file-name {
+    width: calc(100% - 38px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}
+
 .banner {
     height: 50px;
     line-height: 50px;
@@ -508,5 +520,11 @@ html, body {
 @media (min-width: 768px) {
     .root {
         padding: 0 20px 20px;
+    }
+}
+
+@media (max-width: 512px) {
+    .navi > .dir {
+        max-width: calc(100% / 4 - 28px);
     }
 }

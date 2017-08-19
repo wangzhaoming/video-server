@@ -1,18 +1,58 @@
-<template>
-    <div class="navi">
-        <span class="dir" @click="jump($event)">
-            <img class="svg" src="../img/home.svg" alt="首页">
-        </span>
-        <template v-for="(path, i) in paths">
-            <span class="dir" @click="jump($event)" :data-path="getPath(i)">{{path}}</span>
-        </template>
-    </div>
-</template>
-
 <script>
     import ajax from '../ajax';
 
     export default {
+        render(h) {
+            let child = [
+                h('span', {
+                    'class': 'dir',
+                    on: {
+                        click: this.jump
+                    }
+                }, [
+                    h('img', {
+                        'class': 'svg',
+                        attrs: {
+                            src: '../img/home.svg'
+                        }
+                    })
+                ])
+            ];
+
+            let children = [];
+            for (let i = 1; i <= Math.min(3, this.paths.length); i++) {
+                if (i === 3 && this.paths.length > 3) {
+                    children.unshift(h('span', {
+                        'class': 'dir',
+                        attrs: {
+                            'data-path': '...'
+                        },
+                        domProps: {
+                            textContent: '...'
+                        }
+                    }));
+                } else {
+                    children.unshift(h('span', {
+                        'class': 'dir',
+                        on: {
+                            click: this.jump
+                        },
+                        attrs: {
+                            'data-path': this.getPath(this.paths.length - i)
+                        },
+                        domProps: {
+                            textContent: this.paths[this.paths.length - i]
+                        }
+                    }));
+                }
+            }
+
+            child = child.concat(children);
+
+            return h('div', {
+                'class': 'navi'
+            }, child);
+        },
         props: ['paths'],
         methods: {
             getPath: function(i) {
@@ -24,6 +64,11 @@
             },
             jump: function(e) {
                 let target = e.target.dataset.path || '';
+
+                if (target === '...') {
+                    return;
+                }
+
                 if (this.$root.currentPath === target) {
                     return;
                 }
